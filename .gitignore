@@ -1,0 +1,35 @@
+# Binaries
+pocketbase-mcp-go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go
+vendor/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+
+# Env
+.env
+.env.*
+
+# Local acceptance runtime (PocketBase binary + data)
+.local/
+
+# Coverage
+coverage/
+*.coverprofile
+
+.cursor
+.specify
+specs
