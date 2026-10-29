@@ -1,5 +1,89 @@
 # PocketBase MCP (Go)
 
+> **English** | [中文](#pocketbase-mcp-go-中文说明)
+
+A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server for [PocketBase](https://pocketbase.io), written in Go. Expose PocketBase collections, record CRUD, user authentication, and database backups to AI clients via a single binary.
+
+## Features
+
+- **24 MCP tools** — collection/record CRUD, user auth, database backup, OAuth2, OTP, and bulk import
+- **Dual transport** — stdio (Cursor, Claude Desktop) or Streamable HTTP (default, `/mcp` endpoint)
+- **Single binary** — no Node.js; compile and run anywhere Go builds
+- **Tested on PocketBase 0.26+** (acceptance tests pass on v0.39.3)
+
+## Quick Start
+
+### Install
+
+```bash
+go install github.com/zouxiaoliang/pocketbase-mcp-go@latest
+```
+
+Or clone and build:
+
+```bash
+git clone https://github.com/zouxiaoliang/pocketbase-mcp-go.git
+cd pocketbase-mcp-go
+go build -o pocketbase-mcp-go .
+```
+
+### Run (HTTP mode, default)
+
+```bash
+export POCKETBASE_URL="http://127.0.0.1:8090"
+export POCKETBASE_ADMIN_EMAIL="admin@example.com"
+export POCKETBASE_ADMIN_PASSWORD="your_password"
+./pocketbase-mcp-go
+# Listens on :8080/mcp by default; /health for health check
+```
+
+### Run (stdio mode, for Cursor / Claude Desktop)
+
+```bash
+./pocketbase-mcp-go -transport=stdio
+```
+
+### MCP Client Configuration (stdio)
+
+```json
+{
+  "mcpServers": {
+    "pocketbase": {
+      "command": "/path/to/pocketbase-mcp-go",
+      "args": ["-transport=stdio"],
+      "env": {
+        "POCKETBASE_URL": "http://127.0.0.1:8090",
+        "POCKETBASE_ADMIN_EMAIL": "admin@example.com",
+        "POCKETBASE_ADMIN_PASSWORD": "your_password"
+      }
+    }
+  }
+}
+```
+
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `POCKETBASE_URL` | Yes | PocketBase instance URL |
+| `POCKETBASE_ADMIN_EMAIL` | No* | Superuser email |
+| `POCKETBASE_ADMIN_PASSWORD` | No* | Superuser password |
+| `POCKETBASE_ADMIN_MODE` | No | `true` to execute record CRUD as superuser (default `false`) |
+| `MCP_TRANSPORT` | No | `http` (default) or `stdio` |
+| `MCP_HTTP_ADDR` | No | HTTP listen address (default `:8080`) |
+
+\* Admin credentials are required for collection management (`list_collections`, `create_collection`, `backup_database`, etc.).
+
+## License
+
+[MIT](LICENSE)
+
+---
+
+<a id="pocketbase-mcp-go-中文说明"></a>
+
+# PocketBase MCP (Go) 中文说明
+
 基于 Go 的 [PocketBase](https://pocketbase.io) [MCP](https://modelcontextprotocol.io) 服务器。通过 MCP 协议向 AI 客户端暴露 PocketBase 的集合管理、记录 CRUD、用户认证、数据库备份等能力，编译为单个可执行文件即可部署。
 
 仓库地址：[github.com/zouxiaoliang/pocketbase-mcp-go](https://github.com/zouxiaoliang/pocketbase-mcp-go)
@@ -308,4 +392,4 @@ pocketbase-mcp-go/
 
 ## 许可证
 
-MIT
+[MIT](LICENSE)
